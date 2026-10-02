@@ -230,8 +230,7 @@
 
   <!-- Latar -->
   <div class="world" id="world">
-    <img class="wallpaper" id="wallpaper" alt="" src="wallpaper.jpg"
-         onerror="this.style.display='none'; if(window.dbg) dbg('wallpaper gagal, pakai gradient')">
+    <img class="wallpaper" id="wallpaper" alt="" src="wallpaper.jpg">
     <div class="tint"></div>
   </div>
   <canvas id="petals"></canvas>
@@ -283,6 +282,11 @@
     const $ = id => document.getElementById(id);
     const dbg = m => { const e = $('dbg'); if (e) e.textContent = 'js: ' + m; };
     dbg('boot script running');
+
+    $('wallpaper').addEventListener('error', function () {
+      this.style.display = 'none';
+      dbg('wallpaper gagal, pakai gradient');
+    });
 
     /* ---------------------------------------------------------------
        Isi pesan. type: text (default) | card (kartu ulang tahun)
@@ -448,5 +452,4 @@
         d.appendChild(img);
       } else {
         item.t.split('\n').forEach((line, j) => {
-          if (j) d.appendChild(document.createElement('br'));
-          d
+          if (j) d.appen
