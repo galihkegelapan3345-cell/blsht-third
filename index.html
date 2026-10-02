@@ -452,4 +452,55 @@
         d.appendChild(img);
       } else {
         item.t.split('\n').forEach((line, j) => {
-          if (j) d.appen
+          if (j) d.appendChild(document.createElement('br'));
+          d.appendChild(document.createTextNode(line));
+        });
+      }
+
+      const time = document.createElement('span');
+      time.className = 'tm';
+      time.textContent = TM[idx];
+      d.appendChild(time);
+
+      log.appendChild(d);
+      setTimeout(scrollDown, 40);
+    }
+
+    function next() {
+      if (busy) return;
+
+      if (i >= M.length) {
+        log.innerHTML = '<div class="day">Hari ini</div>';
+        i = 0;
+        return setTimeout(next, 300);
+      }
+
+      busy = true;
+      $('next').disabled = true;
+      st.textContent = 'mengetik…';
+      st.className = 'st ty';
+
+      const isLast = i === M.length - 1;
+      const item = M[i];
+      const typing = document.createElement('div');
+      typing.className = 'msg typing';
+      typing.innerHTML = '<i></i><i></i><i></i>';
+      log.appendChild(typing);
+      scrollDown();
+
+      const base = item.type === 'photo' ? 500 : item.type === 'card' ? 900 : 650;
+      const delay = isLast ? 1300 : base + Math.min((item.t || '').length * 9, 850);
+      setTimeout(() => {
+        typing.remove();
+        addMessage(item, i);
+        i++;
+        busy = false;
+        $('next').disabled = false;
+        st.textContent = 'online';
+        st.className = 'st';
+      }, delay);
+    }
+    $('next').onclick = next;
+  </script>
+</body>
+</html>
